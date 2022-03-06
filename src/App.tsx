@@ -1,8 +1,10 @@
+import { NotePad } from "./pages/NotePad";
+
+import './styles/global.scss'
+
 function App() {
   return (
-    <div>
-
-    </div>
+    <NotePad />
   );
 }
 
