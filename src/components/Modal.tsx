@@ -1,6 +1,5 @@
 import { ReactNode } from 'react';
 
-import '../styles/global.scss'
 import '../styles/modal.scss'
 
 type ModalProps = {

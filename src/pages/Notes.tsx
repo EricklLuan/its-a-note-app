@@ -11,7 +11,7 @@ export function Notes() {
 
     return (
         <div id='container'>
-            <header>
+            <header id='nav'>
                 <nav>
                     <div id='user-information'>
                         <img src={user === undefined ? accountCircle : String(user.avatar)} alt="User icon"/>

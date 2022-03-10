@@ -12,10 +12,8 @@ div#modal {
     div#content {
         border-radius: 5px;
         background: white;
-        padding: 10px;
         min-width: 50%;
 
-        & > * {width: fit-content;}
     }
 }
 
