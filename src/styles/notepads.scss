@@ -1,0 +1,100 @@
+#container {
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Roboto', sans-serif;
+
+    header {
+        flex: 63px 0;
+        width: 100%;
+        box-shadow: 0 4px 4px 0 rgba($color: #000000, $alpha: 0.04);
+
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        
+        nav {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+
+            div#user-information {
+                height: 32px;
+                margin-left: 16px;
+
+                display: flex;
+                gap: 5px;
+
+                img {
+                    width: 32px;
+                    height: 32px;
+
+                    border-radius: 50%;
+                }
+
+                div {
+                    
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+
+
+                    span#user-name {
+                        font-size: 13px;
+                    }
+    
+                    span#user-email {
+                        font-size: 9px;
+                        color: #6B6B6B;
+                    }
+                }
+            }
+        
+            button {
+                width: 32px;
+                height: 32px;
+                margin-right: 16px;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                background: #ffff;
+                border: 0;
+                border-radius: 50%;
+
+                cursor: pointer;
+
+                &:hover {
+                    filter: brightness(0.9);
+                }
+            }
+        }
+    }
+
+    main {
+        flex: 1;
+        width: 100%;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        & > h1 {
+            font-size: 40px;
+            margin: 0 10px 5px 10px;
+            text-align: center;
+        }
+
+        p {
+            font-size: 15px;
+            margin: 0 10px 0 10px;
+            text-align: center;
+        }
+    }
+}
