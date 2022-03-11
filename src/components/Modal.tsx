@@ -18,7 +18,7 @@ export function Modal(props: ModalProps) {
 
     return (
         <div id='modal' className={ props.visible === false ? 'hidden' : '' } onClick={handleClickOut}>
-            <div id="content" style={{minWidth: `${50}%`}}>
+            <div id="content">
                 {props.children}
             </div>
         </div>

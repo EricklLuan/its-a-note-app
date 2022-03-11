@@ -1,22 +1,28 @@
 import { AuthContext } from '../contexts/AuthContext';
-import { FormEvent, useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 
 import { Modal } from '../components/Modal';
 
 import accountCircle from '../assets/images/account_circle.svg';
 import plusIcon from '../assets/images/plus.svg'
 
-import '../styles/notepads.scss';
-import { get, push, ref } from 'firebase/database';
+import { push, ref } from 'firebase/database';
 import { database } from '../services/firebase';
 
+import { useNotePads } from '../hooks/useNotePads';
+
+import '../styles/notepads.scss';
+
+
 export function NotePads() {
-
-    const [ modalVisible, setModalVisible ] = useState<boolean>(false);
-    const [ notepadTitle, setNotepadTitle ] = useState<string>('');
-
+    
+    const [ modalVisible, setModalVisible ] = useState(false);
+    const [ notepadTitle, setNotepadTitle ] = useState('');
+    
     const { user } = useContext(AuthContext);
 
+    const notepads = useNotePads();
+    
     function handleImageError(event: any) {
         event.target.src = accountCircle;
     }   
@@ -27,14 +33,14 @@ export function NotePads() {
 
     async function handleNotepadForm(event: any) {
         event.preventDefault();
-
-        if (user && notepadTitle === "") {
+        
+        if (user && notepadTitle.trim() !== "") {
             const dbref = ref(database, `users/${user.id}/notepads`);
             
             push(dbref, {
                 title: notepadTitle,
                 color: event.target.previousSibling.style.backgroundColor,
-                date: new Date().getDate().toString()
+                date: new Date().toString()
             })
         }
     }
@@ -50,20 +56,32 @@ export function NotePads() {
                             <span id='user-email'>{user?.email}</span>
                         </div>
                     </div>
-                    <button onClick={() => setModalVisible(!modalVisible)}>
+                    <button onClick={() => setModalVisible(true)}>
                         <img src={plusIcon} alt="" />
                     </button>
                 </nav>
             </header>
             
-            <main>
-                <h1>
-                    The canvas is empty!
-                </h1>
-                <p>
-                    Click on the “+” icon in the upper right corner of the page to add a new <strong>notepad</strong>
-                </p>
-            </main>
+            { !notepads.length ? (
+                <main>
+                    <h1>
+                        The canvas is empty!
+                    </h1>
+                    <p>
+                        Click on the “+” icon in the upper right corner of the page to add a new <strong>notepad</strong>
+                    </p>
+                </main>
+            ) : (
+                <main>
+                    {notepads.map((notepad) => {
+                        return (
+                            <>
+                                <span>{notepad.title}</span>
+                            </>
+                        )
+                    })}
+                </main>
+            ) }
 
             <Modal visible={modalVisible} setState={setModalVisible}>
                 <header id="modal-header" style={{background: "#8C8627"}}>
@@ -81,14 +99,14 @@ export function NotePads() {
                     </div>
                     <div id="text-input-container">
                         <span>Text</span>
-                        <input 
+                        <input
                             type="text"
                             onChange={event => setNotepadTitle(event.target.value)}
                         />
                     </div>
                     <div id="text-buttons-container">
                         <button onClick={() => setModalVisible(false)}>Cancel</button>
-                        <button type="submit">Send</button>
+                        <button type="submit" onClick={() => {setModalVisible(false)}}>Send</button>
                     </div>
                 </form>
             </Modal>
