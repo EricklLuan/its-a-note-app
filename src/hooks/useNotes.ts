@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { database } from "../services/firebase";
 
-type NotePadsType = {
+type NotesType = {
     id: string;
     title: string;
     color: string;
@@ -16,8 +16,8 @@ type NotePadsDataType = Record<string, {
     date: string
 }>
 
-export function useNotePads() {
-    const [ notePads, setNotePads ] = useState<NotePadsType[]>([]);
+export function useNotes() {
+    const [ notes, setNotes ] = useState<NotesType[]>([]);
     const { user } = useContext(AuthContext);
 
     useEffect(() => {
@@ -34,9 +34,9 @@ export function useNotePads() {
                             date: value.date
                         }    
                     });
-                    setNotePads(parsedNotePads);
+                    setNotes(parsedNotePads);
                 } else {
-                    setNotePads([])
+                    setNotes([])
                 }
             })
 
@@ -47,5 +47,5 @@ export function useNotePads() {
 
     }, [user]);
 
-    return notePads;
+    return notes;
 }

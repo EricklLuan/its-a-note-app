@@ -1,8 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { Home } from "./pages/Home";
-import { NotePads } from "./pages/NotePads";
-import { Notes } from "./pages/Notes";
+import { NotePad } from "./pages/NotePad";
 
 import { AuthContextProvider } from "./contexts/AuthContext";
 
@@ -14,8 +13,7 @@ function App() {
       <AuthContextProvider>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/user/notepads/" element={<NotePads />} />
-          <Route path="/user/notepads/:id/notes" element={<Notes />} />
+          <Route path="/user/notepad/" element={<NotePad />} />
         </Routes>
       </AuthContextProvider>
     </BrowserRouter>

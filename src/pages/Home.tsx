@@ -16,7 +16,7 @@ export function Home() {
             await signInWithGoogle();
         }
 
-        navigate("/user/notepads");
+        navigate("/user/notepad");
     }
 
     return (

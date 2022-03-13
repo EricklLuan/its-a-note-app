@@ -2,6 +2,7 @@ import { AuthContext } from '../contexts/AuthContext';
 import { useContext, useState } from 'react';
 
 import { Modal } from '../components/Modal';
+import { Note } from '../components/Note';
 
 import accountCircle from '../assets/images/account_circle.svg';
 import plusIcon from '../assets/images/plus.svg'
@@ -9,19 +10,20 @@ import plusIcon from '../assets/images/plus.svg'
 import { push, ref } from 'firebase/database';
 import { database } from '../services/firebase';
 
-import { useNotePads } from '../hooks/useNotePads';
+import { useNotes } from '../hooks/useNotes';
 
-import '../styles/notepads.scss';
+import '../styles/notepad.scss';
 
 
-export function NotePads() {
+export function NotePad() {
     
+    const [ deleteModalVisible, setDeleteModalVisible ] = useState(false);
     const [ modalVisible, setModalVisible ] = useState(false);
     const [ notepadTitle, setNotepadTitle ] = useState('');
     
     const { user } = useContext(AuthContext);
 
-    const notepads = useNotePads();
+    const notes = useNotes();
     
     function handleImageError(event: any) {
         event.target.src = accountCircle;
@@ -42,6 +44,8 @@ export function NotePads() {
                 color: event.target.previousSibling.style.backgroundColor,
                 date: new Date().toString()
             })
+
+            setNotepadTitle("");
         }
     }
 
@@ -62,8 +66,8 @@ export function NotePads() {
                 </nav>
             </header>
             
-            { !notepads.length ? (
-                <main>
+            { !notes.length ? (
+                <main id='no-notepads'>
                     <h1>
                         The canvas is empty!
                     </h1>
@@ -72,12 +76,15 @@ export function NotePads() {
                     </p>
                 </main>
             ) : (
-                <main>
-                    {notepads.map((notepad) => {
+                <main id='notepads'>
+                    {notes.map((note) => {
                         return (
-                            <>
-                                <span>{notepad.title}</span>
-                            </>
+                            <Note
+                                key={note.id} 
+                                title={note.title}
+                                color={note.color}
+                                date={note.date}
+                            />
                         )
                     })}
                 </main>
@@ -101,6 +108,7 @@ export function NotePads() {
                         <span>Text</span>
                         <input
                             type="text"
+                            value={notepadTitle}
                             onChange={event => setNotepadTitle(event.target.value)}
                         />
                     </div>
