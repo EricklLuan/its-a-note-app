@@ -17,9 +17,9 @@ import '../styles/notepad.scss';
 
 export function NotePad() {
     
-    const [ deleteModalVisible, setDeleteModalVisible ] = useState(false);
     const [ modalVisible, setModalVisible ] = useState(false);
-    const [ notepadTitle, setNotepadTitle ] = useState('');
+    const [ noteContent, setNoteContent ] = useState('');
+    const [ noteTitle, setNoteTitle ] = useState('');
     
     const { user } = useContext(AuthContext);
 
@@ -33,19 +33,19 @@ export function NotePad() {
         event.target.offsetParent.firstChild.firstChild.style = `background: ${event.target.name}`
     }
 
-    async function handleNotepadForm(event: any) {
+    async function handleNoteForm(event: any) {
         event.preventDefault();
         
-        if (user && notepadTitle.trim() !== "") {
+        if (user && noteTitle.trim() !== "") {
             const dbref = ref(database, `users/${user.id}/notepads`);
             
             push(dbref, {
-                title: notepadTitle,
+                title: noteTitle,
                 color: event.target.previousSibling.style.backgroundColor,
                 date: new Date().toString()
             })
 
-            setNotepadTitle("");
+            setNoteTitle("");
         }
     }
 
@@ -92,9 +92,9 @@ export function NotePad() {
 
             <Modal visible={modalVisible} setState={setModalVisible}>
                 <header id="modal-header" style={{background: "#8C8627"}}>
-                    <h1>New NotePad</h1>
+                    <h1>New Note</h1>
                 </header>
-                <form onSubmit={handleNotepadForm}>
+                <form onSubmit={handleNoteForm}>
                     <div id="colors-buttons-container">
                         <span>Color</span>
                         <div>
@@ -108,9 +108,18 @@ export function NotePad() {
                         <span>Text</span>
                         <input
                             type="text"
-                            value={notepadTitle}
-                            onChange={event => setNotepadTitle(event.target.value)}
+                            value={noteTitle}
+                            onChange={event => setNoteTitle(event.target.value)}
                         />
+                    </div>
+                    <div id="text-area-container">
+                        <span>Content</span>
+                        <textarea 
+                            value={noteContent}
+                            onChange={event => setNoteContent(event.target.value)}
+                        >
+
+                        </textarea>
                     </div>
                     <div id="text-buttons-container">
                         <button onClick={() => setModalVisible(false)}>Cancel</button>
