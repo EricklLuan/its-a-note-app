@@ -6,12 +6,14 @@ import { database } from "../services/firebase";
 type NotesType = {
     id: string;
     title: string;
+    content: string;
     color: string;
     date: string
 }
 
 type NotePadsDataType = Record<string, {
     title: string;
+    content: string;
     color: string;
     date: string
 }>
@@ -30,6 +32,7 @@ export function useNotes() {
                         return {
                             id: key,
                             title: value.title,
+                            content: value.content,
                             color: value.color,
                             date: value.date
                         }    

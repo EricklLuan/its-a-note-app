@@ -6,6 +6,8 @@ import { Note } from '../components/Note';
 
 import accountCircle from '../assets/images/account_circle.svg';
 import plusIcon from '../assets/images/plus.svg'
+import editIcon from '../assets/images/edit.svg'
+import deleteIcon from '../assets/images/delete.svg'
 
 import { push, ref } from 'firebase/database';
 import { database } from '../services/firebase';
@@ -17,7 +19,9 @@ import '../styles/notepad.scss';
 
 export function NotePad() {
     
+    const [ deleteModalVisible, setDeleteModalVisible ] = useState(false);
     const [ modalVisible, setModalVisible ] = useState(false);
+
     const [ noteContent, setNoteContent ] = useState('');
     const [ noteTitle, setNoteTitle ] = useState('');
     
@@ -41,11 +45,13 @@ export function NotePad() {
             
             push(dbref, {
                 title: noteTitle,
+                content: noteContent,
                 color: event.target.previousSibling.style.backgroundColor,
                 date: new Date().toString()
             })
 
             setNoteTitle("");
+            setNoteContent("");
         }
     }
 
@@ -84,11 +90,44 @@ export function NotePad() {
                                 title={note.title}
                                 color={note.color}
                                 date={note.date}
-                            />
+                            >
+                                 <>
+                                    <header style={{background: `${note.color}`}}>
+                                        <div id="header-text">
+                                            <h1>{note.title}</h1>
+                                            <span>{new Date(note.date).toLocaleString()}</span>
+                                        </div>
+                                        <div id="header-buttons">
+                                            <button style={{background: `${note.color}`}}>
+                                                <img src={editIcon} alt="" />
+                                            </button>
+                                            <button onClick={() => setDeleteModalVisible(true)} style={{background: `${note.color}`}}>
+                                                <img src={deleteIcon} alt="" />
+                                            </button>
+                                        </div>
+                                    </header>
+                                    <main>
+                                        <p>{note.content}</p>
+                                    </main>
+                                 </>
+                            </Note>
                         )
                     })}
                 </main>
             ) }
+
+            <Modal visible={deleteModalVisible} setState={setDeleteModalVisible}>
+                <h1>Warning!</h1>
+                <p>After confirming there is no turning back, all the note will be lost. Are you sure you want to delete the note?</p>
+                <div>
+                    <button>
+
+                    </button>
+                    <button>
+
+                    </button>
+                </div>
+            </Modal>
 
             <Modal visible={modalVisible} setState={setModalVisible}>
                 <header id="modal-header" style={{background: "#8C8627"}}>
@@ -122,8 +161,8 @@ export function NotePad() {
                         </textarea>
                     </div>
                     <div id="text-buttons-container">
-                        <button onClick={() => setModalVisible(false)}>Cancel</button>
-                        <button type="submit" onClick={() => {setModalVisible(false)}}>Send</button>
+                        <button type="reset" onClick={() => setModalVisible(false)}>Cancel</button>
+                        <button type="submit" onClick={() => setModalVisible(false)}>Send</button>
                     </div>
                 </form>
             </Modal>

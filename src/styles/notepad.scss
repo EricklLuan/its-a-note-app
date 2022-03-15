@@ -101,16 +101,15 @@
 
     main#notepads {
         flex: 1;
-        width: auto;
         padding: 10px;
 
         display: grid;
         grid-template-columns: repeat(auto-fill, 235px);
-        grid-template-rows: repeat(auto-fill, 50px);
+        grid-auto-rows: min-content;
         justify-content: space-between;
         gap: 15px;
 
-        @media only screen and (max-width: 504px) {
+        @media only screen and (max-width: 534px) {
             grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
         }
     }
