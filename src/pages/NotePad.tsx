@@ -16,6 +16,7 @@ import { useNotes } from '../hooks/useNotes';
 
 import '../styles/notepad.scss';
 
+import { ConfirmModal } from '../components/ConfirmModal';
 
 export function NotePad() {
     
@@ -41,7 +42,7 @@ export function NotePad() {
         event.preventDefault();
         
         if (user && noteTitle.trim() !== "") {
-            const dbref = ref(database, `users/${user.id}/notepads`);
+            const dbref = ref(database, `users/${user.id}/notes`);
             
             push(dbref, {
                 title: noteTitle,
@@ -74,23 +75,14 @@ export function NotePad() {
             
             { !notes.length ? (
                 <main id='no-notepads'>
-                    <h1>
-                        The canvas is empty!
-                    </h1>
-                    <p>
-                        Click on the “+” icon in the upper right corner of the page to add a new <strong>notepad</strong>
-                    </p>
+                    <h1>The canvas is empty!</h1>
+                    <p>Click on the “+” icon in the upper right corner of the page to add a new <strong>notepad</strong></p>
                 </main>
             ) : (
                 <main id='notepads'>
                     {notes.map((note) => {
                         return (
-                            <Note
-                                key={note.id} 
-                                title={note.title}
-                                color={note.color}
-                                date={note.date}
-                            >
+                            <Note key={note.id}>
                                  <>
                                     <header style={{background: `${note.color}`}}>
                                         <div id="header-text">
@@ -98,10 +90,8 @@ export function NotePad() {
                                             <span>{new Date(note.date).toLocaleString()}</span>
                                         </div>
                                         <div id="header-buttons">
-                                            <button style={{background: `${note.color}`}}>
-                                                <img src={editIcon} alt="" />
-                                            </button>
-                                            <button onClick={() => setDeleteModalVisible(true)} style={{background: `${note.color}`}}>
+                                            <button style={{background: `${note.color}`}}><img src={editIcon} alt="" /></button>
+                                            <button onClick={() => ConfirmModal.open(<h1></h1>)} style={{background: `${note.color}`}}>
                                                 <img src={deleteIcon} alt="" />
                                             </button>
                                         </div>
@@ -120,12 +110,8 @@ export function NotePad() {
                 <h1>Warning!</h1>
                 <p>After confirming there is no turning back, all the note will be lost. Are you sure you want to delete the note?</p>
                 <div>
-                    <button>
-
-                    </button>
-                    <button>
-
-                    </button>
+                    <button>No</button>
+                    <button>Yes</button>
                 </div>
             </Modal>
 
@@ -143,25 +129,19 @@ export function NotePad() {
                             <button className='colors-button' type='button' name='#8C8627' onClick={handleChangeColor}></button>
                         </div>
                     </div>
+
                     <div id="text-input-container">
                         <span>Text</span>
-                        <input
-                            type="text"
-                            value={noteTitle}
-                            onChange={event => setNoteTitle(event.target.value)}
-                        />
+                        <input type="text" value={noteTitle} onChange={event => setNoteTitle(event.target.value)}/>
                     </div>
+
                     <div id="text-area-container">
                         <span>Content</span>
-                        <textarea 
-                            value={noteContent}
-                            onChange={event => setNoteContent(event.target.value)}
-                        >
-
-                        </textarea>
+                        <textarea value={noteContent} onChange={event => setNoteContent(event.target.value)}></textarea>
                     </div>
+
                     <div id="text-buttons-container">
-                        <button type="reset" onClick={() => setModalVisible(false)}>Cancel</button>
+                        <button type='button' onClick={() => setModalVisible(false)}>Cancel</button>
                         <button type="submit" onClick={() => setModalVisible(false)}>Send</button>
                     </div>
                 </form>

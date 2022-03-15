@@ -27,7 +27,7 @@ export function useNotes() {
             const dbref = ref(database, `users/${user?.id}`);
             const unsubscribeOnValue = onValue(dbref, snapshot => {
                 if (snapshot.exists()) {
-                    const notepadsData: NotePadsDataType = snapshot.val().notepads;
+                    const notepadsData: NotePadsDataType = snapshot.val().notes;
                     const parsedNotePads = Object.entries(notepadsData).map(([key, value]) => {
                         return {
                             id: key,
