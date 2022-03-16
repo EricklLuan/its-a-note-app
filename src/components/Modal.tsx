@@ -1,26 +1,32 @@
-import { ReactNode } from 'react';
 
 import '../styles/modal.scss'
 
 type ModalProps = {
-    children?: ReactNode;
+    title: string;
+    message?: string;
     visible: boolean;
-    setState: Function
+    setState: Function;
 }
 
-export function Modal(props: ModalProps) {
+export function ModaConfirm(props: ModalProps) {
+    if (props.visible === false) return null;
 
-    function handleClickOut(event: any) {
-        if (event.target === event.currentTarget) {
-            props.setState(!props.visible)
-        }
+    function closeModa(event: any) {
+
     }
 
-    return (
-        <div id='modal' className={ props.visible === false ? 'hidden' : '' } onClick={handleClickOut}>
+    return(
+        <div id="modal" onClick={(event: any) => { props.setState(false)}}>
             <div id="content">
-                {props.children}
+                <div id="modal-text">
+                    <h1>{props.title}</h1>
+                    <p>{props.message}</p>
+                </div>
+                <div id="modal-buttons">
+                    <button>No</button>
+                    <button>Yes</button>
+                </div>
             </div>
         </div>
-    );
-}
+    )
+}  
