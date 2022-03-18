@@ -136,6 +136,11 @@
                     font-weight: bold;
                 }
 
+                div {
+                    display: flex;
+                    flex-direction: row;
+                }
+
                 div .colors-button {
                     width: 32px;
                     height: 32px;
