@@ -5,7 +5,7 @@
     background: #00000036;
     color: black;
     
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
 
@@ -15,10 +15,67 @@
     justify-content: center;
     align-items: center;
 
-    .content {
+    #content {
         border-radius: 5px;
         background: white;
         min-width: 50%;
-
     }
+
+    #confirm-content {
+        margin: 10px;
+        border-radius: 5px;
+        background: white;
+        min-width: 256px;
+        padding: 10px;
+
+        #modal-text {
+            width: 100%;
+            height: 35%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+
+            p, h1 {
+                width: 70%;
+            }
+        }
+
+        #modal-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+            height: 50px;
+            gap: 10px;
+
+            button {
+                height: 32px;
+                width: 100px;
+                border: none;
+                background: none;
+                cursor: pointer;
+
+                &:nth-child(1) {
+                    border: 1px solid black;
+                    border-radius: 5px;
+                }
+
+                &:nth-child(2) {
+                    color: white;
+                    background: #592723;
+                    border-radius: 5px;
+                }
+
+                &:hover {
+                    filter: brightness(0.9);
+                }
+            }
+        }
+    }
+}
+
+.noscroll {
+    overflow: hidden;
 }

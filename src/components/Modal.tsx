@@ -17,15 +17,18 @@ type ModalEmptyProps = {
 }
 
 export function ModaConfirm(props: ModalConfirmProps) {
+    
+    document.body.classList.remove('noscroll')
     if (props.visible === false) return null;
+    document.body.classList.add('noscroll')
 
     function closeModal(event: any) {
         if (event.currentTarget === event.target) props.setState(false);
     }
 
     return(
-        <div className="modal" onClick={closeModal}>
-            <div className="content">
+        <div className="modal" onClick={closeModal} style={ { bottom: window.screenTop, right: window.screenLeft } }>
+            <div id="confirm-content">
                 <div id="modal-text">
                     <h1>{props.title}</h1>
                     <p>{props.message}</p>
@@ -46,14 +49,16 @@ export function ModaConfirm(props: ModalConfirmProps) {
 }  
 
 export function ModalEmpty(props: ModalEmptyProps) {
+    document.body.classList.remove('noscroll')
     if (props.visible === false) return null;
-
+    document.body.classList.add('noscroll')
+    
     function closeModal(event: any) {
         if (event.currentTarget === event.target) props.setState(false);
     }
 
     return(
-        <div id="modal" onClick={closeModal}>
+        <div className="modal" onClick={closeModal}>
             <div id="content">
                 {props.children}
             </div>

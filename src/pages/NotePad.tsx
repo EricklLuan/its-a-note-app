@@ -19,6 +19,7 @@ import '../styles/notepad.scss';
 
 export function NotePad() {
 
+    const [userNoteInfo, setUserNoteInfo] = useState([] as any);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showFormModal, setShowFormModal] = useState(false);
     const [noteContent, setNoteContent] = useState('');
@@ -57,11 +58,9 @@ export function NotePad() {
     }
 
     async function handleDeleteNote(noteId: string) {
-        if (!user) return;
-        console.log(noteId);
-        
-        /* const dbref = ref(database, `users/${user?.id}/notes/${noteId}`)
-        await remove(dbref); */
+        remove(ref(database, `users/${user?.id}/notes/${noteId}`))
+        setUserNoteInfo([])
+        setShowFormModal(false)
     }
 
     return (
@@ -119,7 +118,7 @@ export function NotePad() {
                 </main>
             ) : (
                 <main id='notepads'>
-                    {notes.map((note, index, array) => (
+                    {notes.map((note) => (
                         <Note key={note.id}>
                             <>
                                 <header style={{ background: `${note.color}` }}>
@@ -129,24 +128,28 @@ export function NotePad() {
                                     </div>
                                     <div id="header-buttons">
                                         <button style={{ background: `${note.color}` }}><img src={editIcon} alt="" /></button>
-                                        <button onClick={() => { setShowDeleteModal(true); } } style={{ background: `${note.color}` }}>
+                                        <button onClick={() => {
+                                            setUserNoteInfo([note.id])
+                                            setShowDeleteModal(true)
+                                        } } style={{ background: `${note.color}` }}>
                                             <img src={deleteIcon} alt="" />
                                         </button>
+
                                         
-                                        <ModaConfirm key={index}
-                                        title="Warning!"
-                                        message="After confirming there is no turning back, all the note will be lost. Are you sure you want to delete the note?"
-                                        visible={showDeleteModal}
-                                        setState={setShowDeleteModal} 
-                                        onConfirm={() => { handleDeleteNote(note.id) }}
-                                        onDeny={() => { console.log("No") }}
-                                        />
                                     </div>
                                 </header>
                                 <main><p>{note.content}</p></main>
                             </>
                         </Note>
                     ))}
+                    <ModaConfirm 
+                        title="Warning!"
+                        message="After confirming there is no turning back, all the note will be lost. Are you sure you want to delete the note?"
+                        visible={showDeleteModal}
+                        setState={setShowDeleteModal} 
+                        onConfirm={() => { handleDeleteNote(userNoteInfo[0]) }}
+                        onDeny={() => { setShowDeleteModal(false) }}
+                    />
                 </main>
             )}
       </div>
