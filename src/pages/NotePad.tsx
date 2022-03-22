@@ -16,7 +16,6 @@ import { useNotes } from '../hooks/useNotes';
 
 import '../styles/notepad.scss';
 
-
 export function NotePad() {
 
     const [userNoteInfo, setUserNoteInfo] = useState([] as any);

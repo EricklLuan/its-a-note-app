@@ -2,7 +2,6 @@
     width: 100%;
     height: 100%;
 
-
     background: #00000036;
     color: black;
     
@@ -19,7 +18,8 @@
     #content {
         border-radius: 5px;
         background: white;
-        min-width: 50%;
+        width: 50rem;
+        margin: 10px;
     }
 
     #confirm-content {

@@ -49,7 +49,8 @@ export function ModaConfirm(props: ModalConfirmProps) {
 }  
 
 export function ModalEmpty(props: ModalEmptyProps) {
-    document.body.classList.remove('noscroll')
+    
+    document.body.classList.remove('noscoroll')
     if (props.visible === false) return null;
     document.body.classList.add('noscroll')
     
