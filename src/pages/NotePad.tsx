@@ -9,7 +9,7 @@ import plusIcon from '../assets/images/plus.svg'
 import editIcon from '../assets/images/edit.svg'
 import deleteIcon from '../assets/images/delete.svg'
 
-import { push, ref, remove } from 'firebase/database';
+import { push, ref, remove, update } from 'firebase/database';
 import { database } from '../services/firebase';
 
 import { useNotes } from '../hooks/useNotes';
@@ -20,6 +20,7 @@ export function NotePad() {
 
     const [userNoteInfo, setUserNoteInfo] = useState([] as any);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
     const [showFormModal, setShowFormModal] = useState(false);
     const [noteContent, setNoteContent] = useState('');
     const [noteTitle, setNoteTitle] = useState('');
@@ -54,6 +55,19 @@ export function NotePad() {
             setNoteContent("");
         }
 
+    }
+
+    async function handleEditNote(event: any) {
+        update(ref(database, `users/${user?.id}/notes/${userNoteInfo[0]}`), {
+            title: noteTitle,
+            content: noteContent,
+            color: event.target.parentNode.parentNode.previousSibling.style.background,
+            date: new Date().toString()
+        })
+
+        setNoteTitle("");
+        setNoteContent("");
+        setUserNoteInfo([]);
     }
 
     async function handleDeleteNote(noteId: string) {
@@ -92,11 +106,11 @@ export function NotePad() {
                             </div>
                             <div id="text-input-container">
                                 <span>Text</span>
-                                <input type="text" value={noteTitle} onChange={event => setNoteTitle(event.target.value)}/>
+                                <input type="text" onChange={event => setNoteTitle(event.target.value)}/>
                             </div>
                             <div id="text-area-container">
                                 <span>Content</span>
-                                <textarea value={noteContent} onChange={event => setNoteContent(event.target.value)}></textarea>
+                                <textarea onChange={event => setNoteContent(event.target.value)}></textarea>
                             </div>
                             <div id="text-buttons-container">
                                 <button type='button' onClick={() => setShowFormModal(false)}>Cancel</button>
@@ -126,21 +140,59 @@ export function NotePad() {
                                         <span>{new Date(note.date).toLocaleString()}</span>
                                     </div>
                                     <div id="header-buttons">
-                                        <button style={{ background: `${note.color}` }}><img src={editIcon} alt="" /></button>
+                                        <button style={{ background: `${note.color}` }}
+                                            onClick={() => {
+                                                setUserNoteInfo([note.id, note.title, note.content, note.color]);
+                                                setShowEditModal(true);
+                                            }}
+                                        >
+                                            <img src={editIcon} alt="" />
+                                        </button>
+                                        
                                         <button onClick={() => {
                                             setUserNoteInfo([note.id])
                                             setShowDeleteModal(true)
                                         } } style={{ background: `${note.color}` }}>
                                             <img src={deleteIcon} alt="" />
                                         </button>
-
-                                        
                                     </div>
                                 </header>
                                 <main><p>{note.content}</p></main>
                             </>
                         </Note>
                     ))}
+                    <ModalEmpty visible={showEditModal} setState={setShowEditModal}>
+                        <header id="modal-header" style={{background: `${userNoteInfo[3]}`}}>
+                            <h1>Edit Note</h1>
+                        </header>
+                        <form onSubmit={() => handleEditNote(userNoteInfo)}>
+                            <div id="colors-buttons-container">
+                                <span>Color</span>
+                                <div>
+                                    <button className='colors-button' type='button' name='#592723' onClick={handleChangeColor}></button>
+                                    <button className='colors-button' type='button' name='#BF6849' onClick={handleChangeColor}></button>
+                                    <button className='colors-button' type='button' name='#D9923B' onClick={handleChangeColor}></button>
+                                    <button className='colors-button' type='button' name='#8C8627' onClick={handleChangeColor}></button>
+                                </div>
+                            </div>
+                            <div id="text-input-container">
+                                <span>Text</span>
+                                <input type="text" defaultValue={userNoteInfo[1]} 
+                                onInput={(event: any) => setNoteTitle(event.target.value)}/>
+                            </div>
+                            <div id="text-area-container">
+                                <span>Content</span>
+                                <textarea defaultValue={userNoteInfo[2]} onSubmit={(event: any) => console.log(event.target.value)}></textarea>
+                            </div>
+                            <div id="text-buttons-container">
+                                <button type='button' onClick={() => setShowEditModal(false)}>Cancel</button>
+                                <button type='submit' onClick={(event: any) => {
+                                    handleEditNote(event)
+                                    setShowEditModal(false) 
+                                }}>Send</button>
+                            </div>
+                        </form>
+                    </ModalEmpty>
                     <ModaConfirm 
                         title="Warning!"
                         message="After confirming there is no turning back, all the note will be lost. Are you sure you want to delete the note?"
