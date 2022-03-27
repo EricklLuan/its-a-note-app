@@ -1,19 +1,25 @@
-import { AuthContext } from '../contexts/AuthContext';
+// OUTRO
 import { useContext, useState } from 'react';
 
-import { Note } from '../components/Note';
-import { ModaConfirm, ModalEmpty } from '../components/Modal';
-
-import accountCircle from '../assets/images/account_circle.svg';
-import plusIcon from '../assets/images/plus.svg'
-import editIcon from '../assets/images/edit.svg'
-import deleteIcon from '../assets/images/delete.svg'
-
+// Database
 import { push, ref, remove, update } from 'firebase/database';
 import { database } from '../services/firebase';
 
+// Icons
+import accountCircle from '../assets/images/account_circle.svg';
+import deleteIcon from '../assets/images/delete.svg';
+import editIcon from '../assets/images/edit.svg';
+import plusIcon from '../assets/images/plus.svg';
+
+// Components
+import { ModaConfirm, ModalEmpty } from '../components/Modal';
+import { AuthContext } from '../contexts/AuthContext';
+import { Note } from '../components/Note';
+
+// Hooks
 import { useNotes } from '../hooks/useNotes';
 
+// Styles
 import '../styles/notepad.scss';
 
 export function NotePad() {
@@ -29,32 +35,27 @@ export function NotePad() {
 
     const notes = useNotes();
 
-    function handleImageError(event: any) {
-        event.target.src = accountCircle;
-    }
+    function handleImageError(event: any) {event.target.src = accountCircle;}
 
     function handleChangeColor(event: any) {
         event.target.offsetParent.firstChild.firstChild.style = `background: ${event.currentTarget.name}`
-        
     }
 
     async function handleNoteForm(event: any) {
         event.preventDefault();
 
-        if (user && noteTitle.trim() !== "") {
-            const dbref = ref(database, `users/${user.id}/notes`);
-            
-            push(dbref, {
-                title: noteTitle,
-                content: noteContent,
-                color: event.target.parentNode.parentNode.previousSibling.style.background,
-                date: new Date().toString()
-            })
+        if (!user && noteTitle.trim() === "") return;
+        const dbref = ref(database, `users/${user?.id}/notes`);
+        
+        push(dbref, {
+            title: noteTitle,
+            content: noteContent,
+            color: event.target.parentNode.parentNode.previousSibling.style.background,
+            date: new Date().toString()
+        })
 
-            setNoteTitle("");
-            setNoteContent("");
-        }
-
+        setNoteTitle("");
+        setNoteContent("");
     }
 
     async function handleEditNote(event: any) {
@@ -91,7 +92,7 @@ export function NotePad() {
                         <img src={plusIcon} alt="" />
                     </button>
                     <ModalEmpty visible={showFormModal} setState={setShowFormModal}>
-                        <header id="modal-header" style={{background: "#8C8627"}}>
+                        <header id="modal-header" style={{ background: "#8C8627" }}>
                             <h1>New Note</h1>
                         </header>
                         <form onSubmit={handleNoteForm}>
@@ -106,7 +107,7 @@ export function NotePad() {
                             </div>
                             <div id="text-input-container">
                                 <span>Text</span>
-                                <input type="text" onChange={event => setNoteTitle(event.target.value)}/>
+                                <input type="text" onChange={event => setNoteTitle(event.target.value)} />
                             </div>
                             <div id="text-area-container">
                                 <span>Content</span>
@@ -148,11 +149,11 @@ export function NotePad() {
                                         >
                                             <img src={editIcon} alt="" />
                                         </button>
-                                        
+
                                         <button onClick={() => {
                                             setUserNoteInfo([note.id])
                                             setShowDeleteModal(true)
-                                        } } style={{ background: `${note.color}` }}>
+                                        }} style={{ background: `${note.color}` }}>
                                             <img src={deleteIcon} alt="" />
                                         </button>
                                     </div>
@@ -162,7 +163,7 @@ export function NotePad() {
                         </Note>
                     ))}
                     <ModalEmpty visible={showEditModal} setState={setShowEditModal}>
-                        <header id="modal-header" style={{background: `${userNoteInfo[3]}`}}>
+                        <header id="modal-header" style={{ background: `${userNoteInfo[3]}` }}>
                             <h1>Edit Note</h1>
                         </header>
                         <form onSubmit={() => handleEditNote(userNoteInfo)}>
@@ -177,32 +178,42 @@ export function NotePad() {
                             </div>
                             <div id="text-input-container">
                                 <span>Text</span>
-                                <input type="text" defaultValue={userNoteInfo[1]} 
-                                onInput={(event: any) => setNoteTitle(event.target.value)}/>
+                                <input 
+                                    type="text" 
+                                    defaultValue={userNoteInfo[1]} 
+                                    onInput={(event: any) => setNoteTitle(event.target.value)} 
+                                />
                             </div>
                             <div id="text-area-container">
                                 <span>Content</span>
-                                <textarea defaultValue={userNoteInfo[2]} onSubmit={(event: any) => console.log(event.target.value)}></textarea>
+                                <textarea 
+                                    defaultValue={userNoteInfo[2]} 
+                                    onSubmit={(event: any) => console.log(event.target.value)}
+                                >
+                                </textarea>
                             </div>
                             <div id="text-buttons-container">
                                 <button type='button' onClick={() => setShowEditModal(false)}>Cancel</button>
                                 <button type='submit' onClick={(event: any) => {
                                     handleEditNote(event)
-                                    setShowEditModal(false) 
+                                    setShowEditModal(false)
                                 }}>Send</button>
                             </div>
                         </form>
                     </ModalEmpty>
-                    <ModaConfirm 
+                    <ModaConfirm
                         title="Warning!"
-                        message="After confirming there is no turning back, all the note will be lost. Are you sure you want to delete the note?"
+                        message="After confirming there is no 
+                                 turning back, all the note will 
+                                 be lost. Are you sure you want 
+                                 to delete the note?"
                         visible={showDeleteModal}
-                        setState={setShowDeleteModal} 
+                        setState={setShowDeleteModal}
                         onConfirm={() => { handleDeleteNote(userNoteInfo[0]) }}
                         onDeny={() => { setShowDeleteModal(false) }}
                     />
                 </main>
             )}
-      </div>
+        </div>
     );
 }

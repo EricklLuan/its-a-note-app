@@ -18,8 +18,10 @@
     #content {
         border-radius: 5px;
         background: white;
+
         width: 50rem;
         margin: 10px;
+        height: clamp(250px, 90%, 100%);
     }
 
     #confirm-content {

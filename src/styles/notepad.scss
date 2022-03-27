@@ -114,11 +114,12 @@
         }
     }
 
-    
-
     .modal div#content {
+        display: flex;
+        flex-direction: column;
+
         header#modal-header {
-            height: 52px;
+            height: clamp(42px, 90%, 52px);
             padding: 5px 10px;
             
             color: white;
@@ -144,8 +145,8 @@
                 }
 
                 div .colors-button {
-                    width: 32px;
-                    height: 32px;
+                    width: 30px;
+                    height: 30px;
 
                     border-radius: 50%;
                     margin-top: 2px;
@@ -209,21 +210,13 @@
                 }
 
                 textarea {
-                    height: 300px;
                     resize: none;
                     overflow: unset;
                     padding: 5px;
                     border: 1px solid black;
                     border-radius: 3px;
 
-                    @media only screen and (max-height: 630px) {
-                        height: 200px;
-                    }
-
-                    @media only screen and (height: 480px) {
-                        height: 100px;
-                    }
-
+                    height: fit-content;
                 }
             }
             
@@ -232,13 +225,13 @@
                 justify-content: flex-end;
                 align-items: center;
                 margin-top: 10px;
-                height: 50px;
+                height: 32px;
                 gap: 10px;
-
+                
                 button {
-                    height: 32px;
+                    margin-right: 0px;
+                    height: 100%;
                     width: 100px;
-                    border: none;
                     background: none;
                     cursor: pointer;
 
