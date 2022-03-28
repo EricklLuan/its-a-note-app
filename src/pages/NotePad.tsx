@@ -93,7 +93,7 @@ export function NotePad() {
                     </button>
                     <ModalEmpty visible={showFormModal} setState={setShowFormModal}>
                         <header id="modal-header" style={{ background: "#8C8627" }}>
-                            <h1>New Note</h1>
+                            <h1 className="title" >New Note</h1>
                         </header>
                         <form onSubmit={handleNoteForm}>
                             <div id="colors-buttons-container">
@@ -164,7 +164,7 @@ export function NotePad() {
                     ))}
                     <ModalEmpty visible={showEditModal} setState={setShowEditModal}>
                         <header id="modal-header" style={{ background: `${userNoteInfo[3]}` }}>
-                            <h1>Edit Note</h1>
+                            <h1 className="title">Edit Note</h1>
                         </header>
                         <form onSubmit={() => handleEditNote(userNoteInfo)}>
                             <div id="colors-buttons-container">

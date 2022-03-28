@@ -8,7 +8,7 @@
     header#nav {  
         width: 100%;
         height: 63px;
-        box-shadow: 0 4px 4px 0 rgba($color: #000000, $alpha: 0.095);
+        box-shadow: 0 4px 4px 0 rgba($color: #000000, $alpha: 0.2);
 
         display: flex;
         align-items: center;
@@ -133,8 +133,14 @@
         form {
 
             margin: 10px;
+            height: 100%;
+
+            display: flex;
+            flex-direction: column;
 
             div#colors-buttons-container {
+                flex-grow: 0;
+
                 span {
                     font-weight: bold;
                 }
@@ -182,6 +188,8 @@
             }
             
             div#text-input-container {
+                flex-grow: 0;
+
                 display: flex;
                 flex-direction: column;
                 margin-top: 10px;
@@ -200,6 +208,8 @@
             }
 
             div#text-area-container {
+                flex-grow: 1;
+
                 display: flex;
                 flex-direction: column;
                 margin-top: 10px;
@@ -216,7 +226,7 @@
                     border: 1px solid black;
                     border-radius: 3px;
 
-                    height: fit-content;
+                    height: 100%;
                 }
             }
             
