@@ -12,7 +12,7 @@ import editIcon from '../assets/images/edit.svg';
 import plusIcon from '../assets/images/plus.svg';
 
 // Components
-import { ModaConfirm, ModalEmpty } from '../components/Modal';
+import { ModaConfirm, ModalEmpty, ModalOk } from '../components/Modal';
 import { AuthContext } from '../contexts/AuthContext';
 import { Note } from '../components/Note';
 
@@ -26,6 +26,7 @@ export function NotePad() {
 
     const [userNoteInfo, setUserNoteInfo] = useState([] as any);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showNoteModal, setShowNoteModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [showFormModal, setShowFormModal] = useState(false);
     const [noteContent, setNoteContent] = useState('');
@@ -75,6 +76,12 @@ export function NotePad() {
         remove(ref(database, `users/${user?.id}/notes/${noteId}`))
         setUserNoteInfo([])
         setShowFormModal(false)
+    }
+
+    function handleCloseNoteModal() {
+
+        setUserNoteInfo([]);
+        setShowNoteModal(false);
     }
 
     return (
@@ -144,6 +151,8 @@ export function NotePad() {
                                         <button style={{ background: `${note.color}` }}
                                             onClick={() => {
                                                 setUserNoteInfo([note.id, note.title, note.content, note.color]);
+                                                setNoteTitle(note.title);
+                                                setNoteContent(note.content);
                                                 setShowEditModal(true);
                                             }}
                                         >
@@ -158,7 +167,10 @@ export function NotePad() {
                                         </button>
                                     </div>
                                 </header>
-                                <main><p>{note.content}</p></main>
+                                <main onClick={ () => {
+                                    setShowNoteModal(true);
+                                    setUserNoteInfo([note.title, note.content])
+                                }}><p>{note.content}</p></main>
                             </>
                         </Note>
                     ))}
@@ -188,7 +200,7 @@ export function NotePad() {
                                 <span>Content</span>
                                 <textarea 
                                     defaultValue={userNoteInfo[2]} 
-                                    onSubmit={(event: any) => console.log(event.target.value)}
+                                    onInput={(event: any) => setNoteContent(event.target.value)}
                                 >
                                 </textarea>
                             </div>
@@ -201,6 +213,13 @@ export function NotePad() {
                             </div>
                         </form>
                     </ModalEmpty>
+                    <ModalOk
+                        visible={showNoteModal}
+                        setState={setShowNoteModal}
+                        title={userNoteInfo[0]}
+                        message={userNoteInfo[1]}
+                        onOK={handleCloseNoteModal}
+                    />
                     <ModaConfirm
                         title="Warning!"
                         message="After confirming there is no 
