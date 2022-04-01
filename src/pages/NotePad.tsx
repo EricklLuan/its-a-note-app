@@ -12,7 +12,7 @@ import editIcon from '../assets/images/edit.svg';
 import plusIcon from '../assets/images/plus.svg';
 
 // Components
-import { ModaConfirm, ModalEmpty, ModalOk } from '../components/Modal';
+import { ModaConfirm, ModalEmpty } from '../components/Modal';
 import { AuthContext } from '../contexts/AuthContext';
 import { Note } from '../components/Note';
 
@@ -213,13 +213,6 @@ export function NotePad() {
                             </div>
                         </form>
                     </ModalEmpty>
-                    <ModalOk
-                        visible={showNoteModal}
-                        setState={setShowNoteModal}
-                        title={userNoteInfo[0]}
-                        message={userNoteInfo[1]}
-                        onOK={handleCloseNoteModal}
-                    />
                     <ModaConfirm
                         title="Warning!"
                         message="After confirming there is no 

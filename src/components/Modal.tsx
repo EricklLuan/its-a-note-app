@@ -24,11 +24,28 @@ type ModalEmptyProps = {
     children?: ReactNode;
 }
 
-export function ModaConfirm(props: ModalConfirmProps) {
+export function ModalEmpty(props: ModalEmptyProps) {
+    if (!props.visible && document.getElementsByClassName("modal").length) document.body.classList.remove('noscroll');
+    if (!props.visible) return null;
+    document.body.classList.add('noscroll');
     
-    document.body.classList.remove('noscroll')
-    if (props.visible === false) return null;
-    document.body.classList.add('noscroll')
+    function closeModal(event: any) {
+        if (event.currentTarget === event.target) props.setState(false);
+    }
+
+    return(
+        <div className="modal" onClick={closeModal} style={ { bottom: window.screenTop, right: window.screenLeft } }>
+            <div id="content">
+                {props.children}
+            </div>
+        </div>
+    )
+}
+
+export function ModaConfirm(props: ModalConfirmProps) {
+    if (!props.visible && document.getElementsByClassName("modal").length) document.body.classList.remove('noscroll')
+    if (!props.visible) return null;
+    document.body.classList.add('noscroll');
 
     function closeModal(event: any) {
         if (event.currentTarget === event.target) props.setState(false);
@@ -36,7 +53,7 @@ export function ModaConfirm(props: ModalConfirmProps) {
 
     return(
         <div className="modal" onClick={closeModal} style={ { bottom: window.screenTop, right: window.screenLeft } }>
-            <div id="ok-content">
+            <div id="confirm-content">
                 <div id="modal-text">
                     <h1>{props.title}</h1>
                     <p>{props.message}</p>
@@ -51,52 +68,6 @@ export function ModaConfirm(props: ModalConfirmProps) {
                         props.setState(false)
                     }}>Yes</button>
                 </div>
-            </div>
-        </div>
-    )
-}  
-
-export function ModalOk(props: ModalOkProps) {
-    
-    document.body.classList.remove('noscroll')
-    if (props.visible === false) return null;
-    document.body.classList.add('noscroll')
-
-    function closeModal(event: any) {
-        if (event.currentTarget === event.target) props.setState(false);
-    }
-
-    return(
-        <div className="modal" onClick={closeModal} style={ { bottom: window.screenTop, right: window.screenLeft } }>
-            <div id="ok-content">
-                <section>
-                    <h1>{props.title}</h1>
-                    <p>{props.message}</p>
-                </section>
-                <section>
-                    <button onClick={() => props.onOK()}>
-                        Close
-                    </button>
-                </section>
-            </div>
-        </div>
-    )
-}  
-
-export function ModalEmpty(props: ModalEmptyProps) {
-    
-    document.body.classList.remove('noscoroll')
-    if (props.visible === false) return null;
-    document.body.classList.add('noscroll')
-    
-    function closeModal(event: any) {
-        if (event.currentTarget === event.target) props.setState(false);
-    }
-
-    return(
-        <div className="modal" onClick={closeModal} style={ { bottom: window.screenTop, right: window.screenLeft } }>
-            <div id="content">
-                {props.children}
             </div>
         </div>
     )
