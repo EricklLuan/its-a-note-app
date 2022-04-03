@@ -1,0 +1,16 @@
+{
+  "rules": {
+    "users": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      "$userId": {
+      	".read": "auth != null && $userId == auth.id",
+        ".write": "auth != null && $userId == auth.id",
+        "notes": {
+          ".read": "auth != null && $userId == auth.id",
+        	".write": "auth != null && $userId == auth.id"
+        }
+      }
+    }
+  }
+}
