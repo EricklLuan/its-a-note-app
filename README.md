@@ -2,7 +2,7 @@
 
 ## Description
 
-*Its-A-Note-App* is a simple note-taking app that does nothing but store titles and texts. 
+*Its-A-Note-App* is a simple note-taking app that does nothing but store titles and texts.<br>
 The tecnologies used to make this site are:
 - React
 - Typescript
@@ -12,7 +12,7 @@ The tecnologies used to make this site are:
 ## Install and Run
 
 In your terminal paste and run:
-> git clone https://github.com/EricklLuan/its-a-note-app.git
+> git clone https://github.com/EricklLuan/its-a-note-app.git <br>
 > npm install
 
 To run the project only run the code `npm start` in the terminal.
